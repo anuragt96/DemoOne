@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Optional: Cache browsers so they aren't downloaded every time
-        PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\ms-playwright"
+        PLAYWRIGHT_BROWSERS_PATH = "C:\\ProgramData\\Jenkins\\playwright-browsers"
     }
 
     stages {
