@@ -1,49 +1,52 @@
 pipeline {
     agent any
 
+    environment {
+        // Optional: Cache browsers so they aren't downloaded every time
+        PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\ms-playwright"
+    }
+
     stages {
+
         stage('Checkout Code') {
             steps {
-                echo 'Pulling code from GitHub...'
+                echo '📥 Pulling code from GitHub...'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing npm packages...'
+                echo '📦 Installing npm packages...'
                 bat 'npm install'
             }
         }
 
         stage('Install Playwright Browsers') {
             steps {
-                echo 'Installing Playwright browsers...'
+                echo '🌐 Installing Playwright browsers...'
                 bat 'npx playwright install --with-deps'
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo 'Running Playwright Tests...'
-                bat 'npx playwright test'
-            }
-        }
-
-        stage('Generate Report') {
-            when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }
-            steps {
-                echo 'Generating HTML Report...'
-                bat 'npx playwright show-report'
+                echo '🧪 Running Playwright Tests (List Mode)...'
+                // Use list reporter only — no HTML report generated
+                bat 'npx playwright test --reporter=list'
             }
         }
     }
 
     post {
+        success {
+            echo '✅ All tests passed successfully!'
+        }
+        failure {
+            echo '❌ Some tests failed!'
+        }
         always {
-            echo 'Cleaning up workspace...'
+            echo '🧹 Cleaning up workspace...'
             cleanWs()
         }
     }
