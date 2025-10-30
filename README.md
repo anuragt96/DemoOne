@@ -1,3 +1,1 @@
-Hi this is readme file
-hi another one
-hi another
+This is the readme file useful for storing all the changes
