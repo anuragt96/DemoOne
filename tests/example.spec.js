@@ -21,7 +21,7 @@ test.describe('This is the positive test suite', async () => {
 
     await page.getByRole('link', { name: 'Get started' }).click();
     await expect(page).toHaveTitle('Installation | Playwright');
-
+    console.log("New changes");
   });
 
 });
