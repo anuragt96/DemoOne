@@ -16,6 +16,13 @@ pipeline {
             }
         }
 
+        stage('Install Playwright Browsers') {
+            steps {
+                echo 'Installing Playwright browsers...'
+                bat 'npx playwright install --with-deps'
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 echo 'Running Playwright Tests...'
@@ -24,8 +31,11 @@ pipeline {
         }
 
         stage('Generate Report') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
             steps {
-                echo 'Generating HTML report...'
+                echo 'Generating HTML Report...'
                 bat 'npx playwright show-report'
             }
         }
